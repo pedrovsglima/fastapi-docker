@@ -70,3 +70,23 @@ def add_team(name:str, abb:str, season:str) -> dict:
         "len_after": len(teams),
         "new_team": new_team,
     }
+
+
+@app.delete("/teams/{team_abb}")
+def delete_team(team_abb:str) -> dict:
+
+    teams_old = teams.copy()
+
+    for i,v in enumerate(teams):
+        current_abb = v.get("abbreviation", "")
+        if current_abb == team_abb:
+            deleted_team = teams.pop(i)
+            return {
+                "len_before": len(teams_old),
+                "len_after": len(teams),
+                "deleted_team": deleted_team,
+            }
+    
+    return {
+        "message": "Team does not exist"
+    }
