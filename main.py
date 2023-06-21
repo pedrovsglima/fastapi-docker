@@ -40,3 +40,33 @@ def query_team_by_parameters(abb:str, season:str) -> dict:
             }
 
     return {"message": f"No team from season {season} has the abbreviation {abb}"}
+
+
+@app.post("/teams/")
+def add_team(name:str, abb:str, season:str) -> dict:
+    
+    for _,v in enumerate(teams):
+        current_name = v.get("team", "")
+        current_abb = v.get("abbreviation", "")
+        current_season = v.get("season", "")
+        if current_name == name and current_abb == abb and current_season == season:
+            return {
+                "message": "Team already exists"
+            }
+
+    teams_old = teams.copy()
+
+    new_team = {
+        "season": season,	
+        "lg": "NBA",	
+        "team": name,	
+        "abbreviation": abb,	
+        "playoff": "FALSE",
+    }
+    teams.append(new_team)
+
+    return {
+        "len_before": len(teams_old),
+        "len_after": len(teams),
+        "new_team": new_team,
+    }
