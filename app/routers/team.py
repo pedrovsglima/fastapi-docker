@@ -4,9 +4,9 @@ from fastapi import APIRouter
 with open("../nba-stats/team-summaries.csv","r") as f:
     teams = list(DictReader(f))
 
-router = APIRouter()
+router = APIRouter(prefix="/teams")
 
-@router.get("/teams/{team_abb}")
+@router.get("/{team_abb}")
 def query_team_by_abbreviation(team_abb:str) -> str:
     
     for _,v in enumerate(teams):
@@ -17,7 +17,7 @@ def query_team_by_abbreviation(team_abb:str) -> str:
     return f"No team has the following abbreviation: {team_abb}"
 
 
-@router.get("/teams/")
+@router.get("/")
 def query_team_by_parameters(abb:str, season:str) -> dict:
 
     for _,v in enumerate(teams):
@@ -34,7 +34,7 @@ def query_team_by_parameters(abb:str, season:str) -> dict:
     return {"message": f"No team from season {season} has the abbreviation {abb}"}
 
 
-@router.post("/teams/")
+@router.post("/")
 def add_team(name:str, abb:str, season:str) -> dict:
     
     for _,v in enumerate(teams):
@@ -64,7 +64,7 @@ def add_team(name:str, abb:str, season:str) -> dict:
     }
 
 
-@router.delete("/teams/{team_abb}")
+@router.delete("/{team_abb}")
 def delete_team(team_abb:str) -> dict:
 
     teams_old = teams.copy()

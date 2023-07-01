@@ -4,7 +4,11 @@ from routers import team
 
 app = FastAPI()
 
-app.include_router(team.router)
+routers = [
+    team.router
+]
+for router in routers:
+    app.include_router(router)
 
 @app.get("/")
 def index() -> dict:
