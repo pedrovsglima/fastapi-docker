@@ -1,5 +1,8 @@
+from csv import DictReader
 from fastapi import APIRouter
-from ...main import teams
+
+with open("../nba-stats/team-summaries.csv","r") as f:
+    teams = list(DictReader(f))
 
 router = APIRouter()
 
