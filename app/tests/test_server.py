@@ -10,9 +10,9 @@ params = ""
 
 url = URL_BASE+endpoint+params
 print(url)
-# response = requests.get(url)
+response = requests.get(url)
 # response = requests.post(url)
-response = requests.delete(url)
+# response = requests.delete(url)
 
 if response.status_code==200:
     print(response.json())
