@@ -7,3 +7,9 @@ Download: 14/jun/2023
 Última modificação no site: 07/mai/2023
 
 [Glossário das estatísticas](https://www.basketball-reference.com/about/glossary.html)
+
+## Após up no container postgres
+
+docker exec -it database /bin/bash
+
+psql -U admin -d nba
