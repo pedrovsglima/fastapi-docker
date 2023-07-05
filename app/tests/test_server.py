@@ -17,4 +17,5 @@ response = requests.get(url)
 if response.status_code==200:
     print(response.json())
 else:
+    print(response.status_code)
     print(response.content)

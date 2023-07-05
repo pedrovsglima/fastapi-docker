@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
 import models
@@ -18,7 +18,8 @@ def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict
     if result:
         return {"data": result}
     else:
-        return {"message": f"No team has the following abbreviation: {team_abb}"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"No team has the abbreviation {team_abb}")
 
 
 @router.get("/")
@@ -36,10 +37,11 @@ def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) ->
     if result:
         return {"data": result}
     else:
-        return {"message": f"No team from season {season} has the abbreviation {abb}"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"No team from season {season} has the abbreviation {abb}")
 
 
-@router.post("/")
+@router.post("/", status_code=status.HTTP_201_CREATED)
 def add_team(name:str, abb:str, season:str, db:Session=Depends(get_db)) -> dict:
 
     result = (
@@ -53,7 +55,8 @@ def add_team(name:str, abb:str, season:str, db:Session=Depends(get_db)) -> dict:
     )
 
     if result:
-        return {"message": "Team already exists"}
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT,
+                            detail="Team already exists")
     
     else:
         new_team = models.TeamSummary(season=season, team=name, abbreviation=abb)
@@ -73,7 +76,8 @@ def delete_team(team_abb:str, db:Session=Depends(get_db)) -> dict:
     )
 
     if not team_query.first():
-        return {"message": "Team does not exist"}
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Team does not exist")
     
     else:
         team_query.delete(synchronize_session=False)
