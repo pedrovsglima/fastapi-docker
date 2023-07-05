@@ -2,9 +2,9 @@ CREATE SCHEMA team;
 
 DROP TABLE IF EXISTS team.summaries;
 CREATE TABLE team.summaries (
-    season            int                   NULL	
+    season            int                   NOT NULL	
     ,lg                varchar(255)         NULL
-    ,team              varchar(255)         NULL
+    ,team              varchar(255)         NOT NULL
     ,abbreviation      varchar(255)         NULL
     ,playoffs          bool                 NULL
     ,age               float                NULL

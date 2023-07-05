@@ -10,7 +10,7 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict:
 
     result = (
-        db.query(models.TeamSummary.season, models.TeamSummary.team, models.TeamSummary.age)
+        db.query(models.TeamSummary)
         .filter(models.TeamSummary.abbreviation==team_abb)
         .first()
     )
@@ -21,68 +21,61 @@ def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict
         return {"message": f"No team has the following abbreviation: {team_abb}"}
 
 
-# @router.get("/")
-# def query_team_by_parameters(abb:str, season:str) -> dict:
+@router.get("/")
+def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) -> dict:
 
-#     for _,v in enumerate(teams):
-#         current_abb = v.get("abbreviation", "")
-#         current_season = v.get("season", "")
-#         if current_abb == abb and current_season == season:
-#             return {
-#                 "abbreviation": v.get("abbreviation", ""),
-#                 "team": v.get("team", ""),
-#                 "season": v.get("season", ""),
-#                 "age": v.get("age", ""),
-#             }
+    result = (
+        db.query(models.TeamSummary)
+        .filter(
+            models.TeamSummary.abbreviation==abb, 
+            models.TeamSummary.season==season,
+        )
+        .first()
+    )
 
-#     return {"message": f"No team from season {season} has the abbreviation {abb}"}
+    if result:
+        return {"data": result}
+    else:
+        return {"message": f"No team from season {season} has the abbreviation {abb}"}
 
 
-# @router.post("/")
-# def add_team(name:str, abb:str, season:str) -> dict:
+@router.post("/")
+def add_team(name:str, abb:str, season:str, db:Session=Depends(get_db)) -> dict:
+
+    result = (
+        db.query(models.TeamSummary)
+        .filter(
+            models.TeamSummary.abbreviation==abb,
+            models.TeamSummary.season==season,
+            models.TeamSummary.team==name,
+        )
+        .first()
+    )
+
+    if result:
+        return {"message": "Team already exists"}
     
-#     for _,v in enumerate(teams):
-#         current_season = v.get("season", "")
-#         current_name = v.get("team", "")
-#         current_abb = v.get("abbreviation", "")
-#         if current_name == name and current_abb == abb and current_season == season:
-#             return {
-#                 "message": "Team already exists"
-#             }
+    else:
+        new_team = models.TeamSummary(season=season, team=name, abbreviation=abb)
+        db.add(new_team)
+        db.commit()
+        db.refresh(new_team)
 
-#     teams_old = teams.copy()
-
-#     new_team = {
-#         "season": season,	
-#         "lg": "NBA",	
-#         "team": name,	
-#         "abbreviation": abb,	
-#         "playoff": "FALSE",
-#     }
-#     teams.append(new_team)
-
-#     return {
-#         "len_before": len(teams_old),
-#         "len_after": len(teams),
-#         "new_team": new_team,
-#     }
+        return {"data": new_team}
 
 
-# @router.delete("/{team_abb}")
-# def delete_team(team_abb:str) -> dict:
+@router.delete("/{team_abb}")
+def delete_team(team_abb:str, db:Session=Depends(get_db)) -> dict:
 
-    teams_old = teams.copy()
+    team_query = (
+        db.query(models.TeamSummary)
+        .filter(models.TeamSummary.abbreviation==team_abb)
+    )
 
-    for i,v in enumerate(teams):
-        current_abb = v.get("abbreviation", "")
-        if current_abb == team_abb:
-            deleted_team = teams.pop(i)
-            return {
-                "len_before": len(teams_old),
-                "len_after": len(teams),
-                "deleted_team": deleted_team,
-            }
+    if not team_query.first():
+        return {"message": "Team does not exist"}
     
-    return {
-        "message": "Team does not exist"
-    }
+    else:
+        team_query.delete(synchronize_session=False)
+        db.commit()
+        return {"data": "Team deleted"}
