@@ -1,1 +1,1 @@
-from .team import TeamCreate
+from .team import TeamCreate, TeamResponse

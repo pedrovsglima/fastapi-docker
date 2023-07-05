@@ -7,7 +7,7 @@ from database import get_db
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
-@router.get("/{team_abb}")
+@router.get("/{team_abb}", response_model=schemas.TeamResponse)
 def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict:
 
     result = (
@@ -17,13 +17,13 @@ def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict
     )
 
     if result:
-        return {"data": result}
+        return result
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"No team has the abbreviation {team_abb}")
 
 
-@router.get("/")
+@router.get("/", response_model=schemas.TeamResponse)
 def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) -> dict:
 
     result = (
@@ -36,7 +36,7 @@ def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) ->
     )
 
     if result:
-        return {"data": result}
+        return result
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -44,7 +44,7 @@ def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) ->
         )
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse)
 def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
 
     result = (
@@ -68,7 +68,7 @@ def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
         db.commit()
         db.refresh(new_team)
 
-        return {"data": new_team}
+        return new_team
 
 
 @router.delete("/{team_abb}")
@@ -86,4 +86,4 @@ def delete_team(team_abb:str, db:Session=Depends(get_db)) -> dict:
     else:
         team_query.delete(synchronize_session=False)
         db.commit()
-        return {"data": "Team deleted"}
+        return {"detail": "Team deleted"}

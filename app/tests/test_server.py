@@ -2,9 +2,9 @@ import requests
 
 URL_BASE = "http://0.0.0.0:8000/"
 # endpoint = ""
-endpoint = "teams/LAL"
-# endpoint = "teams"
-params = ""
+endpoint = "teams"
+# params = ""
+params = "/LAL"
 # params = "?abb=LAL&season=2023"
 data = {}
 # data = {
