@@ -6,9 +6,8 @@ class TeamCreate(BaseModel):
     abb: str
     season: int
 
-class TeamResponse(BaseModel):
+class TeamBasicInfo(BaseModel):
     season: int
-    lg: Optional[str]
     team: str
     abbreviation: str
     playoffs: Optional[bool]
@@ -16,3 +15,7 @@ class TeamResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TeamAndSeason(BaseModel):
+    season: int
+    abb: str

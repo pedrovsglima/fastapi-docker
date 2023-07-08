@@ -8,8 +8,8 @@ from database import get_db
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
-@router.get("/{team_abb}", response_model=List[schemas.TeamResponse])
-def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict:
+@router.get("/{team_abb}", response_model=List[schemas.TeamBasicInfo])
+def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)):
 
     result = (
         db.query(models.TeamSummary)
@@ -24,8 +24,8 @@ def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict
                             detail=f"No team has the abbreviation {team_abb}")
 
 
-@router.get("/", response_model=schemas.TeamResponse)
-def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) -> dict:
+@router.get("/", response_model=schemas.TeamBasicInfo)
+def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)):
 
     result = (
         db.query(models.TeamSummary)
@@ -44,14 +44,83 @@ def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) ->
             detail=f"No team from season {season} has the abbreviation {abb}"
         )
 
-# TODO: get
-# team-summaries (filtrar pela season e retornar todas as stats)
-# team-stats-per-game (filtrar pela abb e season, retornar todas as stats)
-# team-totals (filtrar pela abb e season, retornar todas as stats)
-# end-of-season-teams (filtrar pela season e retornar tudo)
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse)
-def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
+@router.get("/season/stats-per-game")
+def stats_by_season(team:schemas.TeamAndSeason, db:Session=Depends(get_db)):
+
+    result = (
+        db.query(models.TeamStatsPerGame)
+        .filter(models.TeamStatsPerGame.season==team.season,
+                models.TeamStatsPerGame.abbreviation==team.abb)
+        .first()
+    )
+
+    if result:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No team on season {team.season} with the abbreviation {team.abb}"
+        )
+
+
+@router.get("/season/totals")
+def totals_by_season(team:schemas.TeamAndSeason, db:Session=Depends(get_db)):
+
+    result = (
+        db.query(models.TeamTotal)
+        .filter(models.TeamTotal.season==team.season,
+                models.TeamTotal.abbreviation==team.abb)
+        .first()
+    )
+
+    if result:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No team on season {team.season} with the abbreviation {team.abb}"
+        )
+
+
+@router.get("/season/{season}")
+def list_teams_by_season(season:int, db:Session=Depends(get_db)):
+
+    result = (
+        db.query(models.TeamSummary)
+        .filter(models.TeamSummary.season==season)
+        .all()
+    )
+
+    if result:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No team on season {season}"
+        )
+
+
+@router.get("/end-of-season/{season}")
+def list_end_of_season_teams(season:int, db:Session=Depends(get_db)):
+
+    result = (
+        db.query(models.TeamEndOfSeason)
+        .filter(models.TeamEndOfSeason.season==season)
+        .all()
+    )
+
+    if result:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No team on season {season}"
+        )
+
+
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamBasicInfo)
+def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)):
 
     result = (
         db.query(models.TeamSummary)
@@ -78,7 +147,7 @@ def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
 
 
 @router.delete("/{team_abb}")
-def delete_team(team_abb:str, db:Session=Depends(get_db)) -> dict:
+def delete_team(team_abb:str, db:Session=Depends(get_db)):
 
     team_query = (
         db.query(models.TeamSummary)

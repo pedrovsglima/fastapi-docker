@@ -6,6 +6,7 @@ endpoint = "teams"
 # endpoint = "players"
 # params = ""
 params = "/LAL"
+# params = "/end-of-season/2023"
 # params = "/3932"
 # params = "?abb=LAL&season=2023"
 data = {}
@@ -14,10 +15,14 @@ data = {}
 #     "season": 2024,
 #     "team": "SPORT",
 # }
+# data = {
+#     "abb": "LAL",
+#     "season": 2023
+# }
 
 url = URL_BASE+endpoint+params
 print(url)
-response = requests.get(url)
+response = requests.get(url, json=data)
 # response = requests.post(url, json=data)
 # response = requests.delete(url)
 
