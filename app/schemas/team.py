@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class TeamCreate(BaseModel):
-    name: str
+    team: str
     abb: str
     season: int
 

@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
@@ -7,13 +8,13 @@ from database import get_db
 
 router = APIRouter(prefix="/teams", tags=["teams"])
 
-@router.get("/{team_abb}", response_model=schemas.TeamResponse)
+@router.get("/{team_abb}", response_model=List[schemas.TeamResponse])
 def query_team_by_abbreviation(team_abb:str, db:Session=Depends(get_db)) -> dict:
 
     result = (
         db.query(models.TeamSummary)
         .filter(models.TeamSummary.abbreviation==team_abb)
-        .first()
+        .all()
     )
 
     if result:
@@ -43,6 +44,11 @@ def query_team_by_parameters(abb:str, season:str, db:Session=Depends(get_db)) ->
             detail=f"No team from season {season} has the abbreviation {abb}"
         )
 
+# TODO: get
+# team-summaries (filtrar pela season e retornar todas as stats)
+# team-stats-per-game (filtrar pela abb e season, retornar todas as stats)
+# team-totals (filtrar pela abb e season, retornar todas as stats)
+# end-of-season-teams (filtrar pela season e retornar tudo)
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.TeamResponse)
 def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
@@ -52,7 +58,7 @@ def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
         .filter(
             models.TeamSummary.abbreviation==team.abb,
             models.TeamSummary.season==team.season,
-            models.TeamSummary.team==team.name,
+            models.TeamSummary.team==team.team,
         )
         .first()
     )
@@ -63,7 +69,7 @@ def add_team(team:schemas.TeamCreate, db:Session=Depends(get_db)) -> dict:
     
     else:
         new_team = models.TeamSummary(
-            season=team.season, team=team.name, abbreviation=team.abb)
+            season=team.season, team=team.team, abbreviation=team.abb)
         db.add(new_team)
         db.commit()
         db.refresh(new_team)
