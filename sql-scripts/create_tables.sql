@@ -4,14 +4,14 @@ CREATE SCHEMA player;
 CREATE TABLE team.end_of_season (
     season          INT               NOT NULL
     ,lg             VARCHAR(255)      NULL
-    ,type           VARCHAR(255)      NULL
+    ,type           VARCHAR(255)      NOT NULL
     ,number_tm      VARCHAR(255)      NULL
     ,player         VARCHAR(255)      NOT NULL
     ,position       VARCHAR(255)      NULL
     ,seas_id        INT               NULL
     ,player_id      INT               NULL
     ,birth_year     INT               NULL
-    ,tm             VARCHAR(255)      NOT NULL
+    ,tm             VARCHAR(255)      NULL
     ,age            INT               NULL
 );
 
