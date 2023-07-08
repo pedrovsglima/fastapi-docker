@@ -13,3 +13,8 @@ class PlayerInfoResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class PlayerAndSeason(BaseModel):
+    id: int
+    season: Optional[int]

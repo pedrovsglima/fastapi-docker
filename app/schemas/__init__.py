@@ -1,2 +1,2 @@
 from .team import TeamCreate, TeamBasicInfo, TeamAndSeason
-from .player import PlayerInfoResponse
+from .player import PlayerInfoResponse, PlayerAndSeason
