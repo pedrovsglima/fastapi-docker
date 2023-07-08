@@ -17,5 +17,5 @@ class TeamBasicInfo(BaseModel):
         orm_mode = True
 
 class TeamAndSeason(BaseModel):
-    season: int
     abb: str
+    season: Optional[int]
