@@ -77,9 +77,9 @@ class PlayerTotal(Base):
     __tablename__ = "totals"
     __table_args__ = {"schema": "player"}
 
-    seas_id        = Column(Integer, nullable=True)
+    seas_id        = Column(Integer, primary_key=True)
     season         = Column(Integer, nullable=True)
-    player_id      = Column(Integer, nullable=True)
+    player_id      = Column(Integer, primary_key=True)
     player         = Column(String, nullable=True)
     birth_year     = Column(Integer, nullable=True)
     pos            = Column(String, nullable=True)

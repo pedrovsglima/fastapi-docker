@@ -3,14 +3,16 @@ import requests
 URL_BASE = "http://0.0.0.0:8000/"
 # endpoint = ""
 endpoint = "teams"
+# endpoint = "players"
 # params = ""
 params = "/LAL"
+# params = "/3932"
 # params = "?abb=LAL&season=2023"
 data = {}
 # data = {
 #     "abb": "SPO",
 #     "season": 2024,
-#     "name": "SPORT",
+#     "team": "SPORT",
 # }
 
 url = URL_BASE+endpoint+params
