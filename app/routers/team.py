@@ -44,7 +44,7 @@ def stats_per_game(team:schemas.TeamAndSeason, db:Session=Depends(get_db)):
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No team has the abbreviation {team.abb}"
+            detail=f"No team found. Abbreviation: {team.abb}, Season: {team.season}"
         )
 
 
@@ -62,7 +62,7 @@ def stats_totals(team:schemas.TeamAndSeason, db:Session=Depends(get_db)):
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No team has the abbreviation {team.abb}"
+            detail=f"No team found. Abbreviation: {team.abb}, Season: {team.season}"
         )
 
 

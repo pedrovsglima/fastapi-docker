@@ -8,6 +8,23 @@ from database import get_db
 
 router = APIRouter(prefix="/players", tags=["players"])
 
+
+@router.get("/")
+def season_info(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
+
+    query_filter = [models.PlayerSeasonInfo.player_id==player.id]
+    if player.season:
+        query_filter.append(models.PlayerSeasonInfo.season==player.season)
+
+    result = db.query(models.PlayerSeasonInfo).filter(*query_filter).all()
+
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"No player found. Id: {player.id}, Season: {player.season}")
+
+
 @router.get("/all", response_model=List[schemas.PlayerInfoResponse])
 def list_all_players(db:Session=Depends(get_db)):
 
@@ -37,7 +54,7 @@ def stats_per_game(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
         return result
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"No player has the id {player.id}")
+                            detail=f"No player found. Id: {player.id}, Season: {player.season}")
 
 
 @router.get("/totals")
@@ -53,23 +70,7 @@ def stats_per_game(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
         return result
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"No player has the id {player.id}")
-
-
-@router.get("/season")
-def season_info(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
-
-    query_filter = [models.PlayerSeasonInfo.player_id==player.id]
-    if player.season:
-        query_filter.append(models.PlayerSeasonInfo.season==player.season)
-
-    result = db.query(models.PlayerSeasonInfo).filter(*query_filter).all()
-
-    if result:
-        return result
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"No player has the id {player.id}")
+                            detail=f"No player found. Id: {player.id}, Season: {player.season}")
 
 
 @router.get("/{player_id}", response_model=schemas.PlayerInfoResponse)
