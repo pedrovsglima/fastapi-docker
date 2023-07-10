@@ -8,6 +8,8 @@ Requisitos para rodar a aplicação: ter o Docker instalado.
 
 Criação de uma API em python utilizando o framework FastAPI que se conecta a um banco de dados PostgreSQL através do SQLAlchemy.
 
+- montar diagrama!!!!!
+
 ### Dataset
 
 Disponível em: [NBA Stats (1947-present)](https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats)
@@ -26,6 +28,7 @@ A partir dos [arquivos .csv](https://github.com/peuvitor/fastapi-docker/tree/mai
 project
 │   README.md                     #
 │   docker-compose.yml            # configurações dos containers
+│   openai.json                   # descrição da API criada
 │                                 #
 └───app                           #
 │   │   __init__.py               #
@@ -63,10 +66,69 @@ project
     │   team-stats-per-game.csv   #
     │   team-summaries.csv        #
     │   team-totals.csv           #
+│                                 #
+└───images                        # imagens para o README.md
+    │   *.PNG                     #      
 ```
 
 ## FastAPI app
 
+- endpoints relacionados aos times:
+
+    - `/teams/`: informação de um time de acordo com parâmetros de consulta 
+
+    <img src="./images/01get_teams_params.PNG"/>
+
+    - `/teams/{team_abb}`: informação de um time de acordo com parâmetros da rota
+
+    <img src="./images/05get_teams_abb.PNG"/>
+
+    - `/teams/`: cria um time de acordo com os dados passados no corpo da requisição
+
+    <img src="./images/02post_add_team.PNG"/>
+
+    - `/teams/{team_abb}/`: apagar um time de acordo com parâmetros da rota
+
+    <img src="./images/06delete_teams.PNG"/>
+
+    - `/teams/stats-per-game/`: estatísticas por jogo de um time
+
+    <img src="./images/03get_teams_stats.PNG"/>
+
+    - `/teams/totals/`: valores totais das estastísticas de um time
+
+    <img src="./images/04get_teams_totals.PNG"/>
+
+    - `/teams/season/{season}`: listar os times participantes de uma temporada
+
+    <img src="./images/07get_teams_list.PNG"/>
+
+    - `/teams/end-of-season/{season}/`: listar os times de final de temporada
+
+    <img src="./images/08get_teams_end.PNG"/>
+
+
+- endpoints relacionados aos jogadores:
+
+    - `/players/`: participações de um jogador de acordo com os dados passados no corpo da requisição
+    
+    <img src="./images/01get_players_season.PNG"/>
+
+    - `/players/all`: lista todos os jogadores
+    
+    <img src="./images/02get_players_all.PNG"/>
+
+    - `/players/stats-per-game`: estatísticas por jogo de um jogador
+    
+    <img src="./images/03get_players_stats.PNG"/>
+
+    - `/players/totals`: valores totais das estastísticas de um jogador
+    
+    <img src="./images/04get_players_totals.PNG"/>
+
+    - `/players/{player_id}`: informação de um jogador de acordo com parâmetros da rota
+    
+    <img src="./images/05get_players_id.PNG"/>
 
 
 ## Exemplos de funcionamento

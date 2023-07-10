@@ -1,0 +1,723 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/teams/": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Query Team By Parameters",
+                "operationId": "query_team_by_parameters_teams__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Abb",
+                            "type": "string"
+                        },
+                        "name": "abb",
+                        "in": "query"
+                    },
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Season",
+                            "type": "string"
+                        },
+                        "name": "season",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamBasicInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Add Team",
+                "operationId": "add_team_teams__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamBasicInfo"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/stats-per-game": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Stats Per Game",
+                "operationId": "stats_per_game_teams_stats_per_game_get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamAndSeason"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/totals": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Stats Totals",
+                "operationId": "stats_totals_teams_totals_get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamAndSeason"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/{team_abb}": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Query Team By Abbreviation",
+                "operationId": "query_team_by_abbreviation_teams__team_abb__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Team Abb",
+                            "type": "string"
+                        },
+                        "name": "team_abb",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Query Team By Abbreviation Teams  Team Abb  Get",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TeamBasicInfo"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "Delete Team",
+                "operationId": "delete_team_teams__team_abb__delete",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Team Abb",
+                            "type": "string"
+                        },
+                        "name": "team_abb",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/season/{season}": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "List Teams By Season",
+                "operationId": "list_teams_by_season_teams_season__season__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Season",
+                            "type": "integer"
+                        },
+                        "name": "season",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teams/end-of-season/{season}": {
+            "get": {
+                "tags": [
+                    "teams"
+                ],
+                "summary": "List End Of Season Teams",
+                "operationId": "list_end_of_season_teams_teams_end_of_season__season__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Season",
+                            "type": "integer"
+                        },
+                        "name": "season",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Season Info",
+                "operationId": "season_info_players__get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlayerAndSeason"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/all": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "List All Players",
+                "operationId": "list_all_players_players_all_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response List All Players Players All Get",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PlayerInfoResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/stats-per-game": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Stats Per Game",
+                "operationId": "stats_per_game_players_stats_per_game_get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlayerAndSeason"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/totals": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Stats Per Game",
+                "operationId": "stats_per_game_players_totals_get",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlayerAndSeason"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/players/{player_id}": {
+            "get": {
+                "tags": [
+                    "players"
+                ],
+                "summary": "Query Player By Id",
+                "operationId": "query_player_by_id_players__player_id__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "title": "Player Id",
+                            "type": "integer"
+                        },
+                        "name": "player_id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PlayerInfoResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "Index",
+                "operationId": "index__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Index  Get",
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "PlayerAndSeason": {
+                "title": "PlayerAndSeason",
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "integer"
+                    },
+                    "season": {
+                        "title": "Season",
+                        "type": "integer"
+                    }
+                }
+            },
+            "PlayerInfoResponse": {
+                "title": "PlayerInfoResponse",
+                "required": [
+                    "player_id",
+                    "player",
+                    "num_seasons",
+                    "first_seas",
+                    "last_seas"
+                ],
+                "type": "object",
+                "properties": {
+                    "player_id": {
+                        "title": "Player Id",
+                        "type": "integer"
+                    },
+                    "player": {
+                        "title": "Player",
+                        "type": "string"
+                    },
+                    "birth_year": {
+                        "title": "Birth Year",
+                        "type": "integer"
+                    },
+                    "hof": {
+                        "title": "Hof",
+                        "type": "boolean"
+                    },
+                    "num_seasons": {
+                        "title": "Num Seasons",
+                        "type": "integer"
+                    },
+                    "first_seas": {
+                        "title": "First Seas",
+                        "type": "integer"
+                    },
+                    "last_seas": {
+                        "title": "Last Seas",
+                        "type": "integer"
+                    }
+                }
+            },
+            "TeamAndSeason": {
+                "title": "TeamAndSeason",
+                "required": [
+                    "abb"
+                ],
+                "type": "object",
+                "properties": {
+                    "abb": {
+                        "title": "Abb",
+                        "type": "string"
+                    },
+                    "season": {
+                        "title": "Season",
+                        "type": "integer"
+                    }
+                }
+            },
+            "TeamBasicInfo": {
+                "title": "TeamBasicInfo",
+                "required": [
+                    "season",
+                    "team",
+                    "abbreviation"
+                ],
+                "type": "object",
+                "properties": {
+                    "season": {
+                        "title": "Season",
+                        "type": "integer"
+                    },
+                    "team": {
+                        "title": "Team",
+                        "type": "string"
+                    },
+                    "abbreviation": {
+                        "title": "Abbreviation",
+                        "type": "string"
+                    },
+                    "playoffs": {
+                        "title": "Playoffs",
+                        "type": "boolean"
+                    },
+                    "age": {
+                        "title": "Age",
+                        "type": "number"
+                    }
+                }
+            },
+            "TeamCreate": {
+                "title": "TeamCreate",
+                "required": [
+                    "team",
+                    "abb",
+                    "season"
+                ],
+                "type": "object",
+                "properties": {
+                    "team": {
+                        "title": "Team",
+                        "type": "string"
+                    },
+                    "abb": {
+                        "title": "Abb",
+                        "type": "string"
+                    },
+                    "season": {
+                        "title": "Season",
+                        "type": "integer"
+                    }
+                }
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
