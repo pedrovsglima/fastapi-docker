@@ -58,7 +58,7 @@ def stats_per_game(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
 
 
 @router.get("/totals")
-def stats_per_game(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
+def stats_totals(player:schemas.PlayerAndSeason, db:Session=Depends(get_db)):
 
     query_filter = [models.PlayerTotal.player_id==player.id]
     if player.season:
