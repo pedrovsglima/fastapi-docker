@@ -1,33 +1,72 @@
-# Dockerizing FastAPI 
+# Dockerizing a FastAPI app and a PostgreSQL database
 
-Base de dados: [NBA Stats (1947-present)](https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats)
+Requisitos para rodar a aplicação: ter o Docker instalado.
 
-Download: 14/jun/2023
+[acesso aos arquivos](https://github.com/peuvitor/fastapi-docker)
 
-Última modificação no site: 07/mai/2023
+## Overview
+
+Criação de uma API em python utilizando o framework FastAPI que se conecta a um banco de dados PostgreSQL através do SQLAlchemy.
+
+### Dataset
+
+Disponível em: [NBA Stats (1947-present)](https://www.kaggle.com/datasets/sumitrodatta/nba-aba-baa-stats)
+
+Download: 14/jun/2023 (última modificação no site: 07/mai/2023)
 
 [Glossário das estatísticas](https://www.basketball-reference.com/about/glossary.html)
 
-## Dataset
+### PostgreSQL database
 
-- end of season:
+A partir dos [arquivos .csv](https://github.com/peuvitor/fastapi-docker/tree/main/nba-stats) da base de dados utilizada, foram criadas e populadas os schemas e as tabelas. Isso se deu adicionando os [arquivos .sql](https://github.com/peuvitor/fastapi-docker/tree/main/sql-scripts) de DDL e DML no diretório `docker-entrypoint-initdb.d`, utilizado por padrão para rodar scripts na inicialização do container.
 
-    - end-of-season-teams: season, player (name, age, team, position), type (All-Defense, All-NBA, All-Rookie)
+## Estrutura do projeto
 
-- players:
+```                                             
+project
+│   README.md                     #
+│   docker-compose.yml            # configurações dos containers
+│                                 #
+└───app                           #
+│   │   __init__.py               #
+│   │   main.py                   # arquivo principal da aplicação
+│   │   database.py               # conexão com o banco de dados
+│   │                             #
+│   └───models                    # estrutura base para consulta ao banco de dados
+│       │   __init__.py           #
+│       │   player.py             #
+│       │   team.py               #
+│   └───routers                   # organizar endpoints e métodos
+│       │   __init__.py           #
+│       │   player.py             #
+│       │   team.py               #
+│   └───schemas                   # validar requisições e padronizar respostas
+│       │   __init__.py           #
+│       │   player.py             #
+│       │   team.py               #
+│                                 #
+└───dockerfiles                   #
+│   └───fastapi                   # criar imagem para a API
+│       │   Dockerfile            #
+│       │   requirements.txt      #
+│                                 #
+└───sql-scripts                   # criar e popular banco de dados
+│   │   create_tables.sql         #
+│   │   fill_tables.sql           #
+│                                 #
+└───nba-stats                     # dados escolhidos como base para o banco de dados
+    │   end-of-season-teams.csv   #             
+    │   player-career-info.csv    #
+    │   player-per-game.csv       #
+    │   player-season-info.csv    #
+    │   player-totals.csv         #
+    │   team-stats-per-game.csv   #
+    │   team-summaries.csv        #
+    │   team-totals.csv           #
+```
 
-    - player-career-info: player_id, name, hall of fame, num seasons, first season, last season
+## FastAPI app
 
-    - player-season-info: season, seas_id, player_id, player (id, position, age, years of experience), team
 
-    - player-per-game: season, player (id, name, age, position, years of experience, team), stats
 
-    - player-totals: season, player (id, name, age, position, years of experience, team), totals (points, blocks, etc)
-
-- teams:
-
-    - team-summaries: season, team, playoff (boolean), stats about season
-
-    - team-stats-per-game (teams and league average): season, team, playoff (boolean), stats per game (points, defense, etc)
-
-    - team-totals: season, team, playoff (boolean), totals (points, blocks, etc)
+## Exemplos de funcionamento
