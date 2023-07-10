@@ -8,7 +8,7 @@ Requisitos para rodar a aplicação: ter o Docker instalado.
 
 Criação de uma API em python utilizando o framework FastAPI que se conecta a um banco de dados PostgreSQL através do SQLAlchemy.
 
-- montar diagrama!!!!!
+<img src="./images/diagram.png"/>
 
 ### Dataset
 
@@ -68,7 +68,7 @@ project
     │   team-totals.csv           #
 │                                 #
 └───images                        # imagens para o README.md
-    │   *.PNG                     #      
+    │   *.png                     #      
 ```
 
 ## FastAPI app
@@ -83,7 +83,7 @@ project
 
     <img src="./images/05get_teams_abb.PNG"/>
 
-    - `/teams/`: cria um time de acordo com os dados passados no corpo da requisição
+    - `/teams/`: criar um time de acordo com os dados passados no corpo da requisição
 
     <img src="./images/02post_add_team.PNG"/>
 
@@ -114,7 +114,7 @@ project
     
     <img src="./images/01get_players_season.PNG"/>
 
-    - `/players/all`: lista todos os jogadores
+    - `/players/all`: listar todos os jogadores
     
     <img src="./images/02get_players_all.PNG"/>
 
