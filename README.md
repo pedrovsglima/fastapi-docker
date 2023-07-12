@@ -2,11 +2,11 @@
 
 Requisitos para rodar a aplicação: ter o Docker instalado.
 
-[acesso aos arquivos](https://github.com/peuvitor/fastapi-docker)
-
 ## Overview
 
 Criação de uma API em python utilizando o framework FastAPI que se conecta a um banco de dados PostgreSQL através do SQLAlchemy.
+
+[Estrutura da API criada](https://github.com/peuvitor/fastapi-docker/blob/main/openai.json)
 
 <img src="./images/diagram.png"/>
 
